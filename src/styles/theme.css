@@ -1,0 +1,109 @@
+
+/* Theme configuration with CSS variables */
+:root {
+  /* Color System - Dark Mode (Default) */
+  --color-background: #000000;
+  --color-foreground: #FFFFFF;
+  --color-primary: #9b87f5;
+  --color-primary-hover: #7E69AB;
+  --color-secondary: #1A1A1A;
+  --color-accent: #00FF00;
+  --color-muted: #666666;
+  --color-border: #333333;
+  --color-error: #ea384c;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-info: #0EA5E9;
+
+  /* Chat App Specific Colors */
+  --chatapp-background: var(--color-background);
+  --chatapp-text: var(--color-foreground);
+  --chatapp-secondaryText: #AAAAAA;
+  --chatapp-userBubble: var(--color-secondary);
+  --chatapp-aiBubble: #111111;
+  --chatapp-codeBlock: #222222;
+  --chatapp-codeText: var(--color-accent);
+  --chatapp-inputBg: var(--color-secondary);
+  --chatapp-inputBorder: var(--color-border);
+  --chatapp-placeholder: var(--color-muted);
+
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Spacing System */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* Borders */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-full: 9999px;
+  
+  /* Effects */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+  /* Animations */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.4s ease;
+  
+  /* Z-index layers */
+  --z-base: 1;
+  --z-menu: 10;
+  --z-modal: 50;
+  --z-toast: 100;
+}
+
+/* Light Mode Theme */
+.light-mode {
+  /* Color System - Light Mode */
+  --color-background: #F5F5F5;
+  --color-foreground: #333333;
+  --color-primary: #7E69AB;
+  --color-primary-hover: #6E59A5;
+  --color-secondary: #FFFFFF;
+  --color-accent: #008000;
+  --color-muted: #666666;
+  --color-border: #DDDDDD;
+  --color-error: #DC2626;
+  --color-success: #059669;
+  --color-warning: #D97706;
+  --color-info: #0284C7;
+  
+  /* Chat App Specific Colors */
+  --chatapp-background: var(--color-background);
+  --chatapp-text: var(--color-foreground);
+  --chatapp-secondaryText: #666666;
+  --chatapp-userBubble: #E1EFFF;
+  --chatapp-aiBubble: #F0F0F0;
+  --chatapp-codeBlock: #F8F8F8;
+  --chatapp-codeText: var(--color-accent);
+  --chatapp-inputBg: var(--color-secondary);
+  --chatapp-inputBorder: var(--color-border);
+  --chatapp-placeholder: #999999;
+}

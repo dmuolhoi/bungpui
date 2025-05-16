@@ -1,0 +1,114 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './theme.css';
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html, body {
+    @apply overflow-x-hidden max-w-[100vw];
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+  }
+  
+  body {
+    @apply bg-chatapp-background text-chatapp-text;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1 {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+  }
+
+  h2 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+  }
+
+  h3 {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  h4 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  h5 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+  }
+
+  h6 {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+  }
+
+  a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-primary-hover);
+    text-decoration: underline;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--chatapp-inputBorder);
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted);
+  }
+
+  /* Class-based theme colors for Tailwind */
+  .bg-chatapp-background {
+    background-color: var(--chatapp-background);
+  }
+  .text-chatapp-text {
+    color: var(--chatapp-text);
+  }
+  .text-chatapp-secondaryText {
+    color: var(--chatapp-secondaryText);
+  }
+  .bg-chatapp-userBubble {
+    background-color: var(--chatapp-userBubble);
+  }
+  .bg-chatapp-aiBubble {
+    background-color: var(--chatapp-aiBubble);
+  }
+  .bg-chatapp-codeBlock {
+    background-color: var(--chatapp-codeBlock);
+  }
+  .text-chatapp-codeText {
+    color: var(--chatapp-codeText);
+  }
+  .bg-chatapp-inputBg {
+    background-color: var(--chatapp-inputBg);
+  }
+  .border-chatapp-inputBorder {
+    border-color: var(--chatapp-inputBorder);
+  }
+  .placeholder-chatapp-placeholder::placeholder {
+    color: var(--chatapp-placeholder);
+  }
+}

@@ -1,0 +1,56 @@
+
+@import './theme.css';
+
+/* Mobile improvements */
+@media (max-width: 640px) {
+  .mobile-full {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  .mobile-px-4 {
+    padding-left: var(--space-4) !important;
+    padding-right: var(--space-4) !important;
+  }
+  
+  .mobile-py-2 {
+    padding-top: var(--space-2) !important;
+    padding-bottom: var(--space-2) !important;
+  }
+  
+  /* Ensure text is properly wrapped on small screens */
+  .mobile-text-wrap {
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    padding-right: var(--space-2) !important; /* Increase padding to prevent text touching edge */
+  }
+}
+
+/* Fix for iPhone notch/dynamic island */
+@supports (padding: max(0px)) {
+  .safe-area-inset-bottom {
+    padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
+  }
+  
+  .safe-area-inset-top {
+    padding-top: max(var(--space-2), env(safe-area-inset-top));
+  }
+}
+
+/* Additional responsive utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+}

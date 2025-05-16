@@ -1,0 +1,82 @@
+
+@import './theme.css';
+
+/* Button Variants */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-normal);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+  background-color: var(--chatapp-inputBg);
+}
+
+/* Card Component */
+.card {
+  background-color: var(--chatapp-aiBubble);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--chatapp-inputBorder);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Input Styles */
+.input {
+  background-color: var(--chatapp-inputBg);
+  border: 1px solid var(--chatapp-inputBorder);
+  color: var(--chatapp-text);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  width: 100%;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-hover);
+}
+
+.input::placeholder {
+  color: var(--chatapp-placeholder);
+}
+
+/* Badge Styles */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-full);
+  padding: 0 var(--space-2);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  height: 1.25rem;
+}
+
+.badge-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.badge-secondary {
+  background-color: var(--color-secondary);
+  color: var(--chatapp-text);
+  border: 1px solid var(--chatapp-inputBorder);
+}
