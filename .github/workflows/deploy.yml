@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'  # Using Java 17 which is well-supported for Android development
+          java-version: '17'
 
       - name: Install dependencies
         run: npm ci
@@ -51,44 +51,13 @@ jobs:
             echo "build.gradle file not found"
           fi
 
-      - name: Fix Android root build.gradle
-        run: |
-          ROOT_BUILD_GRADLE="android/build.gradle"
-          if [ -f "$ROOT_BUILD_GRADLE" ]; then
-            echo "Fixing root build.gradle file"
-            cat > "$ROOT_BUILD_GRADLE" << 'EOL'
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath 'com.google.gms:google-services:4.3.15'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-EOL
+      
           else
             echo "Root build.gradle file not found"
           fi
 
       - name: Patch All Android Java/Kotlin Versions
         run: |
-          # Find all build.gradle files and update Java compatibility settings
           find android -name "build.gradle" -type f | while read -r file; do
             echo "Patching Java version in $file"
             if grep -q "sourceCompatibility" "$file"; then
@@ -104,7 +73,6 @@ EOL
             fi
           done
 
-          # Also update gradle.properties if needed
           GRADLE_PROPS="android/gradle.properties"
           if [ -f "$GRADLE_PROPS" ]; then
             echo "org.gradle.java.home=/usr/lib/jvm/temurin-17-jdk-amd64" >> "$GRADLE_PROPS"
