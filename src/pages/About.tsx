@@ -1,6 +1,7 @@
 
 import { NavBar } from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
+import { AppDownload } from "@/components/AppDownload";
 import { useNavigate } from "react-router-dom";
 
 const About = () => {
@@ -51,6 +52,9 @@ const About = () => {
               please don't hesitate to reach out to us at dmuolhoi@gmail.com.
             </p>
           </div>
+          
+          {/* Add the app download component */}
+          <AppDownload />
         </div>
       </main>
     </div>
