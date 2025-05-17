@@ -46,6 +46,12 @@ jobs:
           echo "Listing capacitor-android directory contents:"
           ls -l android/capacitor-android || echo "Directory android/capacitor-android not found"
 
+          if [ -f android/capacitor-android/build.gradle ]; then
+            echo "Found build.gradle file"
+          else
+            echo "build.gradle file not found in android/capacitor-android"
+          fi
+
           ROOT_BUILD_GRADLE="android/build.gradle"
           if [ -f "$ROOT_BUILD_GRADLE" ]; then
             echo "Found root build.gradle"
@@ -72,13 +78,7 @@ jobs:
       - name: Patch All Android Java/Kotlin Versions
         run: |
           find android -name "build.gradle" -type f | while read -r file; do
-            if [[ "$file" == "android/build.gradle" ]]; then
-              echo "Skipping patch for root build.gradle"
-              continue
-            fi
-
             echo "Patching Java version in $file"
-
             if grep -q "sourceCompatibility" "$file"; then
               sed -i 's/sourceCompatibility JavaVersion\.[A-Z0-9_]*/sourceCompatibility JavaVersion.VERSION_17/' "$file"
             elif grep -q "compileOptions" "$file"; then
