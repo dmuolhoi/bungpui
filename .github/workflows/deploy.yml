@@ -1,4 +1,3 @@
-
 name: Deploy to GitHub Pages
 
 on:
@@ -96,7 +95,7 @@ EOL
               sed -i 's/sourceCompatibility JavaVersion\.[A-Z0-9_]*/sourceCompatibility JavaVersion.VERSION_17/' "$file"
             elif grep -q "compileOptions" "$file"; then
               echo "File already has compileOptions but no sourceCompatibility"
-            else 
+            else
               echo -e '\nandroid {\n  compileOptions {\n    sourceCompatibility JavaVersion.VERSION_17\n    targetCompatibility JavaVersion.VERSION_17\n  }\n}' >> "$file"
             fi
 
