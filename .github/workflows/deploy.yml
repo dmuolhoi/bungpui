@@ -64,38 +64,19 @@ jobs:
           ROOT_BUILD_GRADLE="android/build.gradle"
           if [ -f "$ROOT_BUILD_GRADLE" ]; then
             echo "Fixing root build.gradle file"
-            cat > "$ROOT_BUILD_GRADLE" <<'EOL'
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath 'com.google.gms:google-services:4.3.15'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-EOL
+            printf "buildscript {\n    repositories {\n        google()\n        mavenCentral()\n    }\n    dependencies {\n        classpath 'com.android.tools.build:gradle:7.4.2'\n        classpath 'com.google.gms:google-services:4.3.15'\n    }\n}\n\nallprojects {\n    repositories {\n        google()\n        mavenCentral()\n    }\n}\n\ntask clean(type: Delete) {\n    delete rootProject.buildDir\n}" > "$ROOT_BUILD_GRADLE"
           else
             echo "Root build.gradle file not found"
           fi
 
+      - name: Verify root build.gradle content
+        run: |
+          echo "Current build.gradle content:"
+          cat android/build.gradle
+          echo "Total lines: $(wc -l < android/build.gradle)"
+
       - name: Patch All Android Java/Kotlin Versions
         run: |
-          # Find all build.gradle files and update Java compatibility settings
           find android -name "build.gradle" -type f | while read -r file; do
             echo "Patching Java version in $file"
             if grep -q "sourceCompatibility" "$file"; then
@@ -111,7 +92,6 @@ EOL
             fi
           done
 
-          # Also update gradle.properties if needed
           GRADLE_PROPS="android/gradle.properties"
           if [ -f "$GRADLE_PROPS" ]; then
             echo "org.gradle.java.home=/usr/lib/jvm/temurin-17-jdk-amd64" >> "$GRADLE_PROPS"
