@@ -65,6 +65,7 @@ jobs:
           if [ -f "$ROOT_BUILD_GRADLE" ]; then
             echo "Fixing root build.gradle file"
             cat > "$ROOT_BUILD_GRADLE" <<'EOL'
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
         google()
