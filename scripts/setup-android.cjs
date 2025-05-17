@@ -1,4 +1,3 @@
-
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -14,13 +13,29 @@ try {
     fs.writeFileSync(path.join(distPath, 'index.html'), '<html><body>Placeholder</body></html>');
   }
 
-  // Initialize Capacitor if not already done
-  console.log('🔧 Initializing Capacitor...');
-  execSync('npx cap init "Bungpui AI" app.lovable.bungpui --web-dir dist', { stdio: 'inherit' });
-  
-  // Add Android platform
-  console.log('📱 Adding Android platform...');
-  execSync('npx cap add android', { stdio: 'inherit' });
+  // Initialize Capacitor only if config doesn't exist
+  const configExists = fs.existsSync(path.join(__dirname, '../capacitor.config.ts')) ||
+                       fs.existsSync(path.join(__dirname, '../capacitor.config.json')) ||
+                       fs.existsSync(path.join(__dirname, '../capacitor.config.cjs'));
+
+  if (!configExists) {
+    console.log('🔧 Initializing Capacitor...');
+    execSync('npx cap init "Bungpui AI" app.lovable.bungpui --web-dir dist', { stdio: 'inherit' });
+  } else {
+    console.log('✅ Capacitor config found, skipping init.');
+  }
+
+  // Add Android platform if it doesn't exist
+  const androidPath = path.join(__dirname, '../android');
+  if (!fs.existsSync(androidPath)) {
+    console.log('📱 Adding Android platform...');
+    execSync('npx cap add android', { stdio: 'inherit' });
+  } else {
+    console.log('✅ Android platform already added.');
+  }
+
+  console.log('🔄 Syncing Capacitor...');
+  execSync('npx cap sync', { stdio: 'inherit' });
 
   console.log('✅ Android setup completed successfully!');
   console.log('\nNext steps:');
