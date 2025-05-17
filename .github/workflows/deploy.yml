@@ -1,3 +1,4 @@
+
 name: Deploy to GitHub Pages
 
 on:
@@ -23,7 +24,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '17'  # Using Java 17 which is well-supported for Android development
 
       - name: Install dependencies
         run: npm ci
@@ -51,22 +52,34 @@ jobs:
             echo "build.gradle file not found"
           fi
 
-      - name: Patch Capacitor Java version to 17
+      - name: Patch All Android Java/Kotlin Versions
         run: |
-          CAP_FILE="android/capacitor-android/build.gradle"
-          if [ -f "$CAP_FILE" ]; then
-            if grep -q "sourceCompatibility" "$CAP_FILE"; then
-              sed -i 's/sourceCompatibility JavaVersion\.[A-Z0-9_]*/sourceCompatibility JavaVersion.VERSION_17/' "$CAP_FILE"
-            else
-              echo -e '\nandroid {\n  compileOptions {\n    sourceCompatibility JavaVersion.VERSION_17\n    targetCompatibility JavaVersion.VERSION_17\n  }\n}' >> "$CAP_FILE"
+          # Find all build.gradle files and update Java compatibility settings
+          find android -name "build.gradle" -type f | while read -r file; do
+            echo "Patching Java version in $file"
+            if grep -q "sourceCompatibility" "$file"; then
+              sed -i 's/sourceCompatibility JavaVersion\.[A-Z0-9_]*/sourceCompatibility JavaVersion.VERSION_17/' "$file"
+            elif grep -q "compileOptions" "$file"; then
+              echo "File already has compileOptions but no sourceCompatibility"
+            else 
+              echo -e '\nandroid {\n  compileOptions {\n    sourceCompatibility JavaVersion.VERSION_17\n    targetCompatibility JavaVersion.VERSION_17\n  }\n}' >> "$file"
             fi
 
-            if grep -q "targetCompatibility" "$CAP_FILE"; then
-              sed -i 's/targetCompatibility JavaVersion\.[A-Z0-9_]*/targetCompatibility JavaVersion.VERSION_17/' "$CAP_FILE"
+            if grep -q "targetCompatibility" "$file"; then
+              sed -i 's/targetCompatibility JavaVersion\.[A-Z0-9_]*/targetCompatibility JavaVersion.VERSION_17/' "$file"
             fi
-          else
-            echo "Capacitor Android build.gradle file not found, skipping patch"
+          done
+
+          # Also update gradle.properties if needed
+          GRADLE_PROPS="android/gradle.properties"
+          if [ -f "$GRADLE_PROPS" ]; then
+            echo "org.gradle.java.home=/usr/lib/jvm/temurin-17-jdk-amd64" >> "$GRADLE_PROPS"
           fi
+
+      - name: Show Android Gradle Version
+        run: |
+          cd android
+          ./gradlew --version
 
       - name: Build Android APK
         run: cd android && ./gradlew assembleDebug
