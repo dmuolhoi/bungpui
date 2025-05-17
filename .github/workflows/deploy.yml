@@ -37,7 +37,7 @@ jobs:
           VITE_GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Setup Android platform
-        run: node scripts/setup-android.js
+        run: node scripts/setup-android.cjs
 
       - name: Sync web app with Capacitor
         run: npx cap sync android
