@@ -69,13 +69,26 @@ jobs:
         with:
           name: bungpui-android-app
           path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14  # Keep artifacts for 14 days
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+      - name: Create Release for Tagged Commits
         if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
         with:
           files: android/app/build/outputs/apk/debug/app-debug.apk
           name: Bungpui AI ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Build-Only Release
+        if: "!startsWith(github.ref, 'refs/tags/') && github.event_name != 'pull_request'"
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Automated Build ${{ github.run_number }}
+          prerelease: true
+          files: android/app/build/outputs/apk/debug/app-debug.apk
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
