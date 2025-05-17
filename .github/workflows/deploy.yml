@@ -41,17 +41,31 @@ jobs:
       - name: Sync web app with Capacitor
         run: npx cap sync android
 
+      - name: Debug Capacitor Android folder
+        run: |
+          echo "Listing capacitor-android directory contents:"
+          ls -l android/capacitor-android || echo "Directory android/capacitor-android not found"
+          if [ -f android/capacitor-android/build.gradle ]; then
+            echo "Found build.gradle file"
+          else
+            echo "build.gradle file not found"
+          fi
+
       - name: Patch Capacitor Java version to 17
         run: |
           CAP_FILE="android/capacitor-android/build.gradle"
-          if grep -q "sourceCompatibility" "$CAP_FILE"; then
-            sed -i 's/sourceCompatibility JavaVersion\.[A-Z0-9_]*/sourceCompatibility JavaVersion.VERSION_17/' "$CAP_FILE"
-          else
-            echo -e '\nandroid {\n  compileOptions {\n    sourceCompatibility JavaVersion.VERSION_17\n    targetCompatibility JavaVersion.VERSION_17\n  }\n}' >> "$CAP_FILE"
-          fi
+          if [ -f "$CAP_FILE" ]; then
+            if grep -q "sourceCompatibility" "$CAP_FILE"; then
+              sed -i 's/sourceCompatibility JavaVersion\.[A-Z0-9_]*/sourceCompatibility JavaVersion.VERSION_17/' "$CAP_FILE"
+            else
+              echo -e '\nandroid {\n  compileOptions {\n    sourceCompatibility JavaVersion.VERSION_17\n    targetCompatibility JavaVersion.VERSION_17\n  }\n}' >> "$CAP_FILE"
+            fi
 
-          if grep -q "targetCompatibility" "$CAP_FILE"; then
-            sed -i 's/targetCompatibility JavaVersion\.[A-Z0-9_]*/targetCompatibility JavaVersion.VERSION_17/' "$CAP_FILE"
+            if grep -q "targetCompatibility" "$CAP_FILE"; then
+              sed -i 's/targetCompatibility JavaVersion\.[A-Z0-9_]*/targetCompatibility JavaVersion.VERSION_17/' "$CAP_FILE"
+            fi
+          else
+            echo "Capacitor Android build.gradle file not found, skipping patch"
           fi
 
       - name: Build Android APK

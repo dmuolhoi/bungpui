@@ -41,17 +41,17 @@ jobs:
       - name: Sync web app with Capacitor
         run: npx cap sync android
 
-      - name: Ensure Gradle uses Java 17
+      - name: Patch Capacitor Java version to 17
         run: |
-          BUILD_FILE="android/app/build.gradle"
-          if grep -q "sourceCompatibility" "$BUILD_FILE"; then
-            sed -i 's/sourceCompatibility JavaVersion\.[A-Z0-9_]*/sourceCompatibility JavaVersion.VERSION_17/' "$BUILD_FILE"
+          CAP_FILE="android/capacitor-android/build.gradle"
+          if grep -q "sourceCompatibility" "$CAP_FILE"; then
+            sed -i 's/sourceCompatibility JavaVersion\.[A-Z0-9_]*/sourceCompatibility JavaVersion.VERSION_17/' "$CAP_FILE"
           else
-            echo -e '\nandroid {\n  compileOptions {\n    sourceCompatibility JavaVersion.VERSION_17\n    targetCompatibility JavaVersion.VERSION_17\n  }\n}' >> "$BUILD_FILE"
+            echo -e '\nandroid {\n  compileOptions {\n    sourceCompatibility JavaVersion.VERSION_17\n    targetCompatibility JavaVersion.VERSION_17\n  }\n}' >> "$CAP_FILE"
           fi
 
-          if grep -q "targetCompatibility" "$BUILD_FILE"; then
-            sed -i 's/targetCompatibility JavaVersion\.[A-Z0-9_]*/targetCompatibility JavaVersion.VERSION_17/' "$BUILD_FILE"
+          if grep -q "targetCompatibility" "$CAP_FILE"; then
+            sed -i 's/targetCompatibility JavaVersion\.[A-Z0-9_]*/targetCompatibility JavaVersion.VERSION_17/' "$CAP_FILE"
           fi
 
       - name: Build Android APK
