@@ -19,19 +19,6 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Ensure Gradle uses Java 17
-        run: |
-          BUILD_FILE="android/app/build.gradle"
-          if grep -q "sourceCompatibility" "$BUILD_FILE"; then
-            sed -i 's/sourceCompatibility JavaVersion\.[A-Z0-9_]*/sourceCompatibility JavaVersion.VERSION_17/' "$BUILD_FILE"
-          else
-            echo 'compileOptions { sourceCompatibility JavaVersion.VERSION_17 targetCompatibility JavaVersion.VERSION_17 }' >> "$BUILD_FILE"
-          fi
-
-          if grep -q "targetCompatibility" "$BUILD_FILE"; then
-            sed -i 's/targetCompatibility JavaVersion\.[A-Z0-9_]*/targetCompatibility JavaVersion.VERSION_17/' "$BUILD_FILE"
-          fi
-
       - name: Setup Java for Android build
         uses: actions/setup-java@v4
         with:
@@ -53,6 +40,19 @@ jobs:
 
       - name: Sync web app with Capacitor
         run: npx cap sync android
+
+      - name: Ensure Gradle uses Java 17
+        run: |
+          BUILD_FILE="android/app/build.gradle"
+          if grep -q "sourceCompatibility" "$BUILD_FILE"; then
+            sed -i 's/sourceCompatibility JavaVersion\.[A-Z0-9_]*/sourceCompatibility JavaVersion.VERSION_17/' "$BUILD_FILE"
+          else
+            echo -e '\nandroid {\n  compileOptions {\n    sourceCompatibility JavaVersion.VERSION_17\n    targetCompatibility JavaVersion.VERSION_17\n  }\n}' >> "$BUILD_FILE"
+          fi
+
+          if grep -q "targetCompatibility" "$BUILD_FILE"; then
+            sed -i 's/targetCompatibility JavaVersion\.[A-Z0-9_]*/targetCompatibility JavaVersion.VERSION_17/' "$BUILD_FILE"
+          fi
 
       - name: Build Android APK
         run: cd android && ./gradlew assembleDebug
